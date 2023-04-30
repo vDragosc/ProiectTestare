@@ -1,0 +1,1262 @@
+{
+	"info": {
+		"_postman_id": "254618f4-917a-4032-9159-a47e87077ed3",
+		"name": "Regression testing",
+		"description": "# 🧪 Get started here\n\nThis template helps ensure your API continues to work as expected after updates or changes. It contains sample requests for a series of tests that validate different aspects of an API, including:\n\n1. **Status code verification:** We'll check if the API returns the expected status codes for various requests, ensuring reliability and proper error handling.\n2. **JSON schema verification:** We'll make sure the JSON response conforms to a specified JSON Schema, ensuring API contracts are honored.\n3. **Response time verification:** We'll verify that the API's response time is within the acceptable range, providing a smooth user experience and optimizing performance.\n4. **Response body verification:** We'll validate the structure and content of the response body for accuracy, ensuring the integrity of the data and preventing potential issues downstream.\n5. **Header verification:** We'll confirm the presence and correct values of specific headers in the response, enabling secure and well-structured communication between your app and its users.\n    \n\n## 🔖 **How to use this template**\n\n**Step 1:** Send the sample requests and view the response and test results.\n\n**Step 2:** Replace the sample request URLs with your desired API endpoints.\n\n**Step 3:** Customize the tests in the \"Tests\" tab if needed. Don't forget to save your changes.\n\n**Step 4:** Run the collection by selecting \"Run\".\n\n<img src=\"https://content.pstmn.io/666cfa65-6e00-4308-871b-f831128bc0ac/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" width=\"246\" height=\"102\">\n\n### ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24470300"
+	},
+	"item": [
+		{
+			"name": "Get SuperHeroes status code verification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				},
+				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is an array of objects with specified properties\", function() {\r",
+							"  const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"      \"id\": {\r",
+							"        \"type\": \"integer\"\r",
+							"      },\r",
+							"      \"name\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"firstName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"lastName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"place\": {\r",
+							"        \"type\": \"string\"\r",
+							"      }\r",
+							"    },\r",
+							"    \"required\": [\r",
+							"      \"id\",\r",
+							"      \"name\",\r",
+							"      \"firstName\",\r",
+							"      \"lastName\",\r",
+							"      \"place\"\r",
+							"    ]\r",
+							"  }\r",
+							"};\r",
+							"\r",
+							"pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response time is less than 10ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add SuperHero status code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseBodyAtAdd = pm.response.json();\r",
+							"const lastObject = responseBodyAtAdd[responseBodyAtAdd.length-1];\r",
+							"const id = lastObject.id;\r",
+							"pm.environment.set(\"testId\", id);\r",
+							"\r",
+							"console.log(pm.variables.get(\"testId\"));\r",
+							"\r",
+							"pm.test(\"status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Dragos\",\r\n    \"LastName\": \"Vinau\",\r\n    \"Name\": \"developer\",\r\n    \"place\": \"Bucharest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add SuperHero check JSON schema",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"responseBodyAtAdd = pm.response.json();\r",
+							"lastObject = responseBodyAtAdd[responseBodyAtAdd.length-1];\r",
+							"id = lastObject.id;\r",
+							"pm.environment.set(\"testId2\", id);\r",
+							"\r",
+							"// Define the expected schema for the request body\r",
+							"const expectedSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"firstName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"lastName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"place\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\"firstName\", \"lastName\", \"name\", \"place\"]\r",
+							"};\r",
+							"\r",
+							"// Get the request body\r",
+							"const requestBody = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"// Test that the request body matches the expected schema using built-in schema verification\r",
+							"pm.test('request body matches JSON schema', () => {\r",
+							"    pm.expect(requestBody).to.have.jsonSchema(expectedSchema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Dragos\",\r\n    \"lastName\": \"Vinau\",\r\n    \"name\": \"developer\",\r\n    \"place\": \"Bucharest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add SuperHero wrong input type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": 3,\r\n    \"LastName\": \"Vinau\",\r\n    \"Name\": \"developer\",\r\n    \"place\": \"Bucharest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add SuperHero response time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"responseBodyAtAdd = pm.response.json();\r",
+							"lastObject = responseBodyAtAdd[responseBodyAtAdd.length-1];\r",
+							"id = lastObject.id;\r",
+							"pm.environment.set(\"testId3\", id);\r",
+							"\r",
+							"pm.test('response time is less than 20ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(20);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Dragos\",\r\n    \"LastName\": \"Vinau\",\r\n    \"Name\": \"developer\",\r\n    \"place\": \"Bucharest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add SuperHeroe reponse body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Define the expected schema for a single item\r",
+							"const itemSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"firstName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"lastName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"place\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\"id\", \"name\", \"firstName\", \"lastName\", \"place\"]\r",
+							"};\r",
+							"\r",
+							"// Define the expected schema for the response\r",
+							"const responseSchema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": itemSchema\r",
+							"};\r",
+							"\r",
+							"// Test that the response matches the expected schema using built-in schema verification\r",
+							"pm.test('response is a list of SuperHeroes', () => {\r",
+							"    pm.response.to.have.jsonSchema(responseSchema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Dragos\",\r\n    \"LastName\": \"Vinau\",\r\n    \"Name\": \"developer\",\r\n    \"place\": \"Bucharest\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes status code verification after add SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				},
+				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response body after add SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is an array of objects with specified properties\", function() {\r",
+							"  const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"      \"id\": {\r",
+							"        \"type\": \"integer\"\r",
+							"      },\r",
+							"      \"name\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"firstName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"lastName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"place\": {\r",
+							"        \"type\": \"string\"\r",
+							"      }\r",
+							"    },\r",
+							"    \"required\": [\r",
+							"      \"id\",\r",
+							"      \"name\",\r",
+							"      \"firstName\",\r",
+							"      \"lastName\",\r",
+							"      \"place\"\r",
+							"    ]\r",
+							"  }\r",
+							"};\r",
+							"\r",
+							"pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response time after add SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response time is less than 10ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit SuperHero status code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response time is less than 100ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{testId}},\r\n  \"name\": \"Dragos\",\r\n  \"firstName\": \"Vinau\",\r\n  \"lastName\": \"developer\",\r\n  \"place\": \"Galati\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit SuperHero check JSON schema",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Define the expected schema for the request body\r",
+							"const expectedSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"firstName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"lastName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"place\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\"firstName\", \"lastName\", \"name\", \"place\"]\r",
+							"};\r",
+							"\r",
+							"// Get the request body\r",
+							"const requestBody = JSON.parse(pm.request.body.raw);\r",
+							"\r",
+							"// Test that the request body matches the expected schema using built-in schema verification\r",
+							"pm.test('request body matches JSON schema', () => {\r",
+							"    pm.expect(requestBody).to.have.jsonSchema(expectedSchema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{testId}},\r\n  \"name\": \"Dragos\",\r\n  \"firstName\": \"Vinau\",\r\n  \"lastName\": \"developer\",\r\n  \"place\": \"Galati\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit SuperHero wrong input type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{testId}},\r\n  \"name\": Dragos,\r\n  \"firstName\": \"Vinau\",\r\n  \"lastName\": \"developer\",\r\n  \"place\": \"Galati\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit SuperHero response time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{testId}},\r\n  \"name\": \"Dragos\",\r\n  \"firstName\": \"Vinau\",\r\n  \"lastName\": \"developer\",\r\n  \"place\": \"Galati\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit SuperHeroe response body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Define the expected schema for a single item\r",
+							"const itemSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"firstName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"lastName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"place\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\"id\", \"name\", \"firstName\", \"lastName\", \"place\"]\r",
+							"};\r",
+							"\r",
+							"// Define the expected schema for the response\r",
+							"const responseSchema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": itemSchema\r",
+							"};\r",
+							"\r",
+							"// Test that the response matches the expected schema using built-in schema verification\r",
+							"pm.test('response is a list of SuperHeroes', () => {\r",
+							"    pm.response.to.have.jsonSchema(responseSchema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{testId}},\r\n  \"name\": \"Dragos\",\r\n  \"firstName\": \"Vinau\",\r\n  \"lastName\": \"developer\",\r\n  \"place\": \"Galati\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes status code verification after edit SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				},
+				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response body after edit SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is an array of objects with specified properties\", function() {\r",
+							"  const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"      \"id\": {\r",
+							"        \"type\": \"integer\"\r",
+							"      },\r",
+							"      \"name\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"firstName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"lastName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"place\": {\r",
+							"        \"type\": \"string\"\r",
+							"      }\r",
+							"    },\r",
+							"    \"required\": [\r",
+							"      \"id\",\r",
+							"      \"name\",\r",
+							"      \"firstName\",\r",
+							"      \"lastName\",\r",
+							"      \"place\"\r",
+							"    ]\r",
+							"  }\r",
+							"};\r",
+							"\r",
+							"pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response time after edit SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response time is less than 10ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete SuperHero status code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero/{{testId}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero",
+						"{{testId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete SuperHero response time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response time is less than 20ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(20);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero/{{testId2}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero",
+						"{{testId2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete SuperHero response body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Define the expected schema for a single item\r",
+							"const itemSchema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"firstName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"lastName\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"place\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\"id\", \"name\", \"firstName\", \"lastName\", \"place\"]\r",
+							"};\r",
+							"\r",
+							"// Define the expected schema for the response\r",
+							"const responseSchema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": itemSchema\r",
+							"};\r",
+							"\r",
+							"// Test that the response matches the expected schema using built-in schema verification\r",
+							"pm.test('response is a list of SuperHeroes', () => {\r",
+							"    pm.response.to.have.jsonSchema(responseSchema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero/{{testId3}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero",
+						"{{testId3}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes status code verification after delete SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				},
+				"description": "The test on this request asserts that the reponse has a \"200 OK\" status.\n\nYou can check for any HTTP status code using the same mechanism, for example `pm.response.to.have.status(403)` if your API should return an \"Unauthorized\" response."
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response body after delete SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is an array of objects with specified properties\", function() {\r",
+							"  const schema = {\r",
+							"  \"type\": \"array\",\r",
+							"  \"items\": {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"      \"id\": {\r",
+							"        \"type\": \"integer\"\r",
+							"      },\r",
+							"      \"name\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"firstName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"lastName\": {\r",
+							"        \"type\": \"string\"\r",
+							"      },\r",
+							"      \"place\": {\r",
+							"        \"type\": \"string\"\r",
+							"      }\r",
+							"    },\r",
+							"    \"required\": [\r",
+							"      \"id\",\r",
+							"      \"name\",\r",
+							"      \"firstName\",\r",
+							"      \"lastName\",\r",
+							"      \"place\"\r",
+							"    ]\r",
+							"  }\r",
+							"};\r",
+							"\r",
+							"pm.response.to.have.jsonSchema(schema);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SuperHeroes response time after delete SuperHero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response time is less than 10ms', () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(10);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7020/api/SuperHero",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7020",
+					"path": [
+						"api",
+						"SuperHero"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://postman-echo.com"
+		},
+		{
+			"key": "id",
+			"value": "95"
+		}
+	]
+}
