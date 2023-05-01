@@ -1,0 +1,32 @@
+[3] 6:12:29 PM: Log started for 'D:\Tricentis tosca\Tosca_Workspaces\SuperHero\SuperHero.tws'
+[3] 6:12:29 PM: Log level: 4
+[3] 6:12:29 PM: Release: 16.0.1.3074
+[3] 6:12:29 PM: Execution Approval is disabled.
+[3] 6:12:29 PM: No service discovery configured.
+[3] 6:12:29 PM:  + CloudDistributedExecutionAddIn: CloudDistributedExecutionAddIn 16.0.1.3074 (3074)
+[3] 6:12:29 PM:  + DistributedExecutionAddIn: DistributedExecutionAddIn 16.0.1.3074 (3074)
+[3] 6:12:29 PM:  + ElasticExecutionGridAddIn: ElasticExecutionGridAddIn 16.0.1.3074 (3074)
+[3] 6:12:29 PM:  - ExecutionApprovalAddIn: ExecutionApprovalAddIn 16.0.1.3074 (3074)
+[3] 6:12:29 PM:  + ExploratoryTestingAssistant: ExploratoryTestingAssistantAddIn 16.0.1.3074 (3074)
+[3] 6:12:29 PM:  + ExploratoryTestingAssistantUI: ExploratoryTestingAssistantUIAddIn 16.0.1.3074 (3074)
+[3] 6:12:29 PM:  + IntegrationManagementAddIn: IntegrationManagementAddIn 16.0.1.3074 (3074)
+    + : SAPSolutionManagerIntegration 16.0.1.3074 (3074)
+[3] 6:12:29 PM: Search started on 1 objects for query '->PROJECT->SUBPARTS:TCFolder[Name=="Execution"]->SUBPARTS:TCFolder=>SUBPARTS:InteractiveSession'
+[3] 6:12:29 PM: Searcher found 0 results in 95.0002 ms
+[3] 6:12:30 PM:  + OptIntAddIn: OptIntAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + QTestIntegrationAddIn: QTestIntegrationAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + RemoteControl: RemoteControlAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + Reporting: ReportingAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + ReportingUI: ReportingUIAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + RequirementsManagementAddIn: RequirementsManagement 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + RequirementsManagementUIAddIn: RequirementsManagementUI 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + SAPCloudAlmAddIn: SAPCloudAlmAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + SAPSolutionManagerAddIn: SAPSolutionManagerAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + TestCaseDesign: TestCaseDesign 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + ControlFlowDiagram: TestCaseVisualizationAddIn 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + XDefinitions: XDefinitions 16.0.1.3074 (3074)
+[3] 6:12:30 PM:  + XDefinitionsUI: XDefinitionsUI 16.0.1.3074 (3074)
+[3] 6:12:30 PM: Opened from Workspace File 'D:\Tricentis tosca\Tosca_Workspaces\SuperHero\SuperHero.tws'
+[3] 6:12:42 PM: Layout not saved: No Panels or Tabbed Documents
+[3] 6:12:43 PM: Closing Workspace!
+[3] 6:12:43 PM: Log closed!
